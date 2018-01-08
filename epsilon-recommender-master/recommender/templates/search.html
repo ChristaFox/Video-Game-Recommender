@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h1>Search and Rate</h1>
+    </div>
+  </div>
+
+  <div class="well">
+    <form method="post" action = "/search" class="form">
+      <fieldset>
+        <legend>Search</legend>
+        {% csrf_token %}
+        {{ form | crispy }}
+
+        <div class="control-group">
+          <input type="submit" value="Search" class="btn btn-default" />
+        </div>
+      </fieldset>
+    </form>
+  </div>
+
+  <br/><br/><br/><br/>
+
+  <div class="row">
+    <div class="col-md-12">
+
+      {% for v in video_games %}
+      {% if forloop.counter0|divisibleby:4 %} <div class="row"> {% endif %}
+        <div class="col-md-3">
+          {% include 'partials/video_game_small.html' with video_game=v %}
+        </div>
+        {% if forloop.counter|divisibleby:4 %} </div> {% endif %}
+
+      {% endfor %}
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}

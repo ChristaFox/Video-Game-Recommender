@@ -1,0 +1,6 @@
+venv
+*.pyc
+*.log
+staticfiles
+*~
+node_modules

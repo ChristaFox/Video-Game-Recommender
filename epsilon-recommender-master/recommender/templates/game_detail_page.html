@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load recommends %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-4">
+      <img src="{{v.ign_image}}"width="150px"/>
+    </div>
+    <div class="col-md-10">
+      <h2>{{v.name}}</h2>
+      <p>Genre: {{v.genre}}</p>
+      {% for p in v.platforms.all %}
+      <p>Platform: {{p.name}}</p>
+      {% endfor %}
+      <p>Description: {{v.description}}</p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <h3>Related Titles</h3>
+    </div>
+  </div>
+
+  <div class="row">
+    {% for similarity in v|similarities:4 %}
+    <div class="col-md-3">
+      {% include 'partials/video_game_small.html' with video_game=similarity.related_object %}
+    </div>
+    {% endfor %}
+  </div>
+
+  <br/><br/><br/>
+
+  <div class="row">
+    <div class="col-md-12">
+      <h3>Reviews</h3>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-8">
+      <div class="well">
+      <form method="post" action={% url 'game_detail_page' v.slug %} class="form">
+      <fieldset>
+        {% csrf_token %}
+        {{ form | crispy }}
+        <div class="control-group">
+          <input type="submit" value="Submit" class="btn btn-default" />
+        </div>
+        </fieldset>
+         </form>
+      </div>
+    </div>
+  </div>
+<div>
+  {% for rev in reviews %}
+    <div lass="col-md-8">
+    {{rev.user}}
+      <div lass="col-md-8">
+        <div class="well">
+        {{rev.comments}}
+        </div>
+      </div>
+   {% endfor %}
+
+   </div>
+</div>
+
+{% endblock %}
